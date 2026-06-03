@@ -10,4 +10,6 @@ I mainly used AI to ask questions about Spring Boot, as I was learning it while 
 
 > how do i access the database, give me the simplest example with one model, one get endpoint and one post endpoint
 
+> how do i create table relations then
 
+> and how to store dates? java has many classes for those, which is recommended?
