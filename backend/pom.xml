@@ -66,6 +66,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<environmentVariables>
+						<BUDGETING_DB_URL>localhost:5432/budgeting</BUDGETING_DB_URL>
+						<BUDGETING_DB_USERNAME>budgeting</BUDGETING_DB_USERNAME>
+						<BUDGETING_DB_PASSWORD>budgeting</BUDGETING_DB_PASSWORD>
+					</environmentVariables>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

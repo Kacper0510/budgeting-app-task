@@ -29,7 +29,7 @@ public class Transaction {
     @Column(nullable = false)
     private TransactionType type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
     @JsonBackReference
     private Category category;

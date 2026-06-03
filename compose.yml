@@ -16,6 +16,10 @@ services:
       retries: 10
   backend:
     build: ./backend
+    environment:
+      BUDGETING_DB_URL: localhost:5432/budgeting
+      BUDGETING_DB_USERNAME: budgeting
+      BUDGETING_DB_PASSWORD: budgeting
     ports:
       - "8080:8080"
     depends_on:
