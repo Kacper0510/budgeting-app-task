@@ -1,5 +1,6 @@
 package im.kacper.budgeting.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,13 +12,16 @@ import java.util.Optional;
 @Entity
 @Table(name = "categories")
 public class Category {
+    @Schema(description = "Unique identifier of the category", example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Schema(description = "Name of the category", example = "Groceries")
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Schema(description = "Optional budget limit for the category", example = "50000")
     @Column(nullable = true)
     private Long budgetLimit;
 

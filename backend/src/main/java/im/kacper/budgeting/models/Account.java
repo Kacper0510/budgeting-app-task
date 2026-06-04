@@ -1,6 +1,7 @@
 package im.kacper.budgeting.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,13 +17,16 @@ import java.util.List;
 @Entity
 @Table(name = "accounts")
 public class Account {
+    @Schema(description = "Unique identifier of the account", example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Schema(description = "Name of the account", example = "Checking Account")
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Schema(description = "Current balance of the account", example = "100000")
     @Column(nullable = false)
     private long balance = 0L;
 
