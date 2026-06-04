@@ -9,8 +9,12 @@ import im.kacper.budgeting.repositories.CategoryRepository;
 import im.kacper.budgeting.repositories.TransactionRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +33,9 @@ public class TransactionController {
     private AccountRepository accountRepository;
     private TransactionRepository transactionRepository;
     private CategoryRepository categoryRepository;
+
+    private static final CSVFormat CSV_FORMAT =
+        CSVFormat.DEFAULT.builder().setHeader("ID", "Amount", "Type", "Category", "Description", "Timestamp").get();
 
     public TransactionController(
         AccountRepository accountRepository,
@@ -101,5 +108,29 @@ public class TransactionController {
         account.removeTransaction(transaction);
         accountRepository.save(account);
         transactionRepository.delete(transaction);
+    }
+
+    @GetMapping("/export")
+    public String exportTransactions(@PathVariable long accountId) {
+        var account = loadAccount(accountId);
+        var transactions = transactionRepository.findByAccount(account);
+        var stringWriter = new StringWriter();
+        try (var csvBuilder = new CSVPrinter(stringWriter, CSV_FORMAT)) {
+            for (var tx : transactions) {
+                csvBuilder.printRecord(
+                    tx.getId(),
+                    tx.getAmount(),
+                    tx.getType(),
+                    tx.getCategory().getName(),
+                    tx.getDescription().orElse(null),
+                    tx.getTimestamp()
+                );
+            }
+        } catch (IOException e) {
+            throw new ResponseStatusException(
+                HttpStatus.INTERNAL_SERVER_ERROR, "Failed to export transactions: " + e.getMessage()
+            );
+        }
+        return stringWriter.toString();
     }
 }
