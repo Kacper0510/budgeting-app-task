@@ -6,8 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import java.util.Optional;
 
 @Entity
 @Table(name = "categories")
@@ -16,11 +15,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank(message = "Name is required")
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Positive(message = "Budget limit must be positive if provided")
     @Column(nullable = true)
     private Long budgetLimit;
 
@@ -30,7 +27,7 @@ public class Category {
         this.name = name;
     }
 
-    public Category(String name, Long budgetLimit) {
+    public Category(String name, long budgetLimit) {
         this.name = name;
         this.budgetLimit = budgetLimit;
     }
@@ -51,8 +48,8 @@ public class Category {
         this.name = name;
     }
 
-    public Long getBudgetLimit() {
-        return budgetLimit;
+    public Optional<Long> getBudgetLimit() {
+        return Optional.ofNullable(budgetLimit);
     }
 
     public void setBudgetLimit(Long budgetLimit) {

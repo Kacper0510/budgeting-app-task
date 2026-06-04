@@ -12,8 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Table(name = "transactions")
@@ -22,7 +22,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Positive(message = "Amount must be positive")
+    @Column(nullable = false)
     private long amount;
 
     @Enumerated(EnumType.STRING)
@@ -40,7 +40,7 @@ public class Transaction {
     private LocalDateTime timestamp = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id")
     @JsonBackReference
     private Account account;
 
@@ -90,8 +90,8 @@ public class Transaction {
         this.category = category;
     }
 
-    public String getDescription() {
-        return description;
+    public Optional<String> getDescription() {
+        return Optional.ofNullable(description);
     }
 
     public void setDescription(String description) {
@@ -106,8 +106,8 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    public Account getAccount() {
-        return account;
+    public Optional<Account> getAccount() {
+        return Optional.ofNullable(account);
     }
 
     public void setAccount(Account account) {

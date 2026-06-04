@@ -23,6 +23,7 @@ public class Account {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = false)
     private long balance = 0L;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
