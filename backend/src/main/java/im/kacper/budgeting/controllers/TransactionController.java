@@ -233,7 +233,7 @@ public class TransactionController {
         transactionRepository.delete(transaction);
     }
 
-    @GetMapping("/export")
+    @GetMapping(value ="/export", produces = "text/csv")
     @Operation(
         summary = "Export transactions to CSV",
         description = "Exports all transactions for the specified account in CSV format"
