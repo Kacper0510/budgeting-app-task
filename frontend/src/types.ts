@@ -25,4 +25,24 @@ export type TransactionResponse = {
   category: number;
   description: string | null;
   timestamp: string;
-}
+};
+
+export type CreateAccountRequest = {
+  name: string;
+  initialBalance: number;
+};
+
+export type CreateCategoryRequest = Omit<Category, "id">;
+
+export type CreateTransactionRequest = {
+  amount: number;
+  type: TransactionType;
+  categoryId: number;
+  description?: string | null;
+};
+
+export type GetTransactionsRequest = {
+  from: string | null;
+  to: string | null;
+  categoryId: number | null;
+};

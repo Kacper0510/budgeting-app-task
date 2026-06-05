@@ -31,11 +31,11 @@ export default function DashboardView({
   const [summaryDays, setSummaryDays] = useState<number>(30);
 
   const summary = useQueryNotify<SummaryResponse>({
-    queryKey: ["summary", summaryDays],
+    queryKey: ["account", "summary", summaryDays],
     queryFn: () => axios.get(`/api/summary?days=${summaryDays}`).then((res) => res.data),
   });
   const accounts = useQueryNotify<Account[]>({
-    queryKey: ["accounts"],
+    queryKey: ["account", "all"],
     queryFn: () => axios.get("/api/accounts").then((res) => res.data),
   });
   const categories = useQueryNotify<Category[]>({
@@ -44,7 +44,7 @@ export default function DashboardView({
   });
   const deleteAccount = useMutationNotify({
     mutationFn: (accountId: number) => axios.delete(`/api/accounts/${accountId}`),
-    queryKey: ["accounts"],
+    queryKey: ["account", "all"],
   });
   const deleteCategory = useMutationNotify({
     mutationFn: (categoryId: number) => axios.delete(`/api/categories/${categoryId}`),
@@ -196,7 +196,9 @@ export default function DashboardView({
                 <div className="flex items-center gap-2">
                   <AlertCircle className="w-5 h-5 text-yellow-600" />
                   <p className="text-sm text-yellow-800">
-                    {summaryData.budgetLimitWarnings.length} category(ies) have exceeded their budget limits
+                    {summaryData.budgetLimitWarnings.length}{" "}
+                    {summaryData.budgetLimitWarnings.length == 1 ? "category has" : "categories have"} exceeded budget
+                    limits
                   </p>
                 </div>
               </div>

@@ -3,17 +3,13 @@ import { Wallet, DollarSign } from "lucide-react";
 import useMutationNotify from "../../hooks/useMutationNotify";
 import usePopupContext from "../../hooks/usePopupContext";
 import { useState } from "react";
-
-type CreateAccountRequest = {
-  name: string;
-  initialBalance: number;
-};
+import type { CreateAccountRequest } from "../../types";
 
 export default function AddAccountPopup() {
   const setPopup = usePopupContext()[1];
 
   const addAccount = useMutationNotify({
-    queryKey: ["accounts"],
+    queryKey: ["account", "all"],
     mutationFn: (request: CreateAccountRequest) => axios.post("/api/accounts", request),
   });
 
@@ -22,7 +18,8 @@ export default function AddAccountPopup() {
 
   return (
     <form
-      onSubmit={() => {
+      onSubmit={(e) => {
+        e.preventDefault();
         addAccount({ name: name.trim(), initialBalance: Math.round(initialBalance * 100) });
         setPopup(null);
       }}

@@ -3,10 +3,7 @@ import { Tag, DollarSign } from "lucide-react";
 import useMutationNotify from "../../hooks/useMutationNotify";
 import usePopupContext from "../../hooks/usePopupContext";
 import { useState } from "react";
-
-import type { Category } from "../../types";
-
-type CreateCategoryRequest = Omit<Category, "id">;
+import type { CreateCategoryRequest } from "../../types";
 
 export default function AddCategoryPopup() {
   const setPopup = usePopupContext()[1];
@@ -22,7 +19,8 @@ export default function AddCategoryPopup() {
 
   return (
     <form
-      onSubmit={() => {
+      onSubmit={(e) => {
+        e.preventDefault();
         addCategory({ name: name.trim(), budgetLimit: hasBudgetLimit ? Math.round(budgetLimit! * 100) : null });
         setPopup(null);
       }}
