@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DashboardView from "./DashboardView";
 import AccountView from "./AccountView";
-import usePopupContext from "../hooks/usePopup";
+import usePopupContext from "../hooks/usePopupContext";
 import { LayoutDashboard, Wallet, FileText, X, ExternalLink } from "lucide-react";
 
 export default function App() {

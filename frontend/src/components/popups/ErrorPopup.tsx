@@ -1,5 +1,5 @@
 import { AlertCircle } from "lucide-react";
-import usePopupContext from "../hooks/usePopup";
+import usePopupContext from "../../hooks/usePopupContext";
 
 export default function ErrorPopup({ message }: { message: string }) {
   const setCurrentPopup = usePopupContext()[1];

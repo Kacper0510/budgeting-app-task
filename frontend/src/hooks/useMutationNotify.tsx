@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient, type UseMutateFunction, type QueryKey } from "@tanstack/react-query";
-import usePopupContext from "./usePopup";
-import ErrorPopup from "../components/ErrorPopup";
+import usePopupContext from "./usePopupContext";
+import ErrorPopup from "../components/popups/ErrorPopup";
 
 export default function useMutationNotify<TData = unknown, TError = unknown, TVariables = void, TContext = unknown>({
   mutationFn,

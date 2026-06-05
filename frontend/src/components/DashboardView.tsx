@@ -12,11 +12,15 @@ import {
 } from "lucide-react";
 import useQueryNotify from "../hooks/useQueryNotify";
 import type { Account, Category, SummaryResponse } from "../types";
-import usePopupContext from "../hooks/usePopup";
-import AddAccountPopup from "./AddAccountPopup";
-import AddCategoryPopup from "./AddCategoryPopup";
+import usePopupContext from "../hooks/usePopupContext";
+import AddAccountPopup from "./popups/AddAccountPopup";
+import AddCategoryPopup from "./popups/AddCategoryPopup";
 import useMutationNotify from "../hooks/useMutationNotify";
 import { useState } from "react";
+import { formatCurrency } from "../utils";
+import ConfirmDeletePopup from "./popups/ConfirmDeletePopup";
+
+const daysOptions = [7, 30, 90, 365];
 
 export default function DashboardView({
   setSelectedAccount,
@@ -66,8 +70,6 @@ export default function DashboardView({
   const accountsData = accounts.data || [];
   const categoriesData = categories.data || [];
 
-  const daysOptions = [7, 30, 90, 365];
-
   return (
     <div className="space-y-8">
       {/* Summary Section */}
@@ -104,7 +106,7 @@ export default function DashboardView({
                   <span className="text-sm font-medium text-green-700">Total Income</span>
                   <TrendingUp className="w-5 h-5 text-green-600" />
                 </div>
-                <p className="text-2xl font-bold text-green-900">${summaryData.total.INCOME?.toFixed(2) ?? "0.00"}</p>
+                <p className="text-2xl font-bold text-green-900">{formatCurrency(summaryData.total.INCOME)}</p>
               </div>
 
               {/* Total Expense Card */}
@@ -113,7 +115,7 @@ export default function DashboardView({
                   <span className="text-sm font-medium text-red-700">Total Expense</span>
                   <TrendingDown className="w-5 h-5 text-red-600" />
                 </div>
-                <p className="text-2xl font-bold text-red-900">${summaryData.total.EXPENSE?.toFixed(2) ?? "0.00"}</p>
+                <p className="text-2xl font-bold text-red-900">{formatCurrency(summaryData.total.EXPENSE)}</p>
               </div>
 
               {/* Net Balance Card */}
@@ -123,7 +125,7 @@ export default function DashboardView({
                   <DollarSign className="w-5 h-5 text-blue-600" />
                 </div>
                 <p className="text-2xl font-bold text-blue-900">
-                  ${((summaryData.total.INCOME ?? 0) - (summaryData.total.EXPENSE ?? 0)).toFixed(2)}
+                  {formatCurrency((summaryData.total.INCOME ?? 0) - (summaryData.total.EXPENSE ?? 0))}
                 </p>
               </div>
             </div>
@@ -149,7 +151,7 @@ export default function DashboardView({
                           <td className="px-6 py-3 text-gray-900">
                             {categoriesData.find((cat) => cat.id.toString() === category)?.name || "Unknown"}
                           </td>
-                          <td className="px-6 py-3 text-right text-green-600 font-medium">${amount.toFixed(2)}</td>
+                          <td className="px-6 py-3 text-right text-green-600 font-medium">{formatCurrency(amount)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -179,7 +181,7 @@ export default function DashboardView({
                           <td className="px-6 py-3 text-gray-900">
                             {categoriesData.find((cat) => cat.id.toString() === category)?.name || "Unknown"}
                           </td>
-                          <td className="px-6 py-3 text-right text-red-600 font-medium">${amount.toFixed(2)}</td>
+                          <td className="px-6 py-3 text-right text-red-600 font-medium">{formatCurrency(amount)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -236,7 +238,9 @@ export default function DashboardView({
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      deleteAccount(account.id);
+                      setPopup(
+                        <ConfirmDeletePopup itemName={account.name} onConfirm={() => deleteAccount(account.id)} />,
+                      );
                     }}
                     className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                     title="Delete account"
@@ -244,7 +248,7 @@ export default function DashboardView({
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
-                <p className="text-2xl font-bold text-gray-900">${account.balance.toFixed(2)}</p>
+                <p className="text-2xl font-bold text-gray-900">{formatCurrency(account.balance)}</p>
               </div>
             ))}
           </div>
@@ -289,11 +293,18 @@ export default function DashboardView({
                   >
                     <td className="px-6 py-3 text-gray-900">{category.name}</td>
                     <td className="px-6 py-3 text-gray-600">
-                      {category.budgetLimit ? `$${category.budgetLimit.toFixed(2)}` : "No limit"}
+                      {category.budgetLimit ? formatCurrency(category.budgetLimit) : "No limit"}
                     </td>
                     <td className="px-6 py-3 text-right">
                       <button
-                        onClick={() => deleteCategory(category.id)}
+                        onClick={() =>
+                          setPopup(
+                            <ConfirmDeletePopup
+                              itemName={category.name}
+                              onConfirm={() => deleteCategory(category.id)}
+                            />,
+                          )
+                        }
                         className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                         title="Delete category"
                       >

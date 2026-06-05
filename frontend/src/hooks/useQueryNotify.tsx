@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import usePopupContext from "./usePopup";
-import ErrorPopup from "../components/ErrorPopup";
+import usePopupContext from "./usePopupContext";
+import ErrorPopup from "../components/popups/ErrorPopup";
 
 export default function useQueryNotify<
   TData = unknown,
