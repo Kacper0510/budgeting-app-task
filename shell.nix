@@ -2,7 +2,7 @@
   pkgs ? import <nixpkgs> { },
 }:
 let
-  java = pkgs.javaPackages.compiler.temurin-bin.jdk-25; # in sync with backend/Dockerfile
+  java = pkgs.javaPackages.compiler.temurin-bin.jdk-25; # in sync with Dockerfile
 in
 pkgs.mkShell {
   packages = [

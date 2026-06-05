@@ -2,7 +2,6 @@ import axios from "axios";
 import {
   Plus,
   Trash2,
-  Eye,
   AlertCircle,
   Wallet,
   TrendingUp,

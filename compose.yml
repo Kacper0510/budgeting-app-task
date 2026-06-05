@@ -15,9 +15,9 @@ services:
       timeout: 5s
       retries: 10
   backend:
-    build: ./backend
+    build: .
     environment:
-      BUDGETING_DB_URL: localhost:5432/budgeting
+      BUDGETING_DB_URL: database:5432/budgeting
       BUDGETING_DB_USERNAME: budgeting
       BUDGETING_DB_PASSWORD: budgeting
     ports:
