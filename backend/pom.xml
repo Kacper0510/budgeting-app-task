@@ -59,6 +59,13 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<!-- DO NOT UPGRADE UNTIL THEY FIX THEIR F***ING ENUM CONSTRAINTS IN THE NEWEST VERSION -->
+ 			<version>2.3.232</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-csv</artifactId>
 			<version>1.14.1</version>
